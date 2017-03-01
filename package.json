@@ -7,6 +7,7 @@
     "url": "https://github.com/avaamo/Node.js.git"
   },
   "readme": "readme.md",
+  "main": "lib/avaamo.js",
   "license": "BSD-3-Clause",
   "dependencies": {
     "form-data": "^0.2.0",
