@@ -1,5 +1,5 @@
 {
-  "name": "Avaamo-Bot-JS-SDK",
+  "name": "avaamo",
   "version": "1.0.0",
   "description": "Avaamo Bot SDK for implementing bots in servers using Avaamo Platform",
   "repository": {
