@@ -13,9 +13,10 @@ The repository has `lib` and `assets` directory which you need not worry about. 
 The `bot_app.js` file is the sample bot application which has the example code.
 
 ## Pre-requisite
-Node.js version >= 4.2.4
 
-NPM version >= 2.14.12
+- Node.js version >= 4.2.4
+
+- NPM version >= 2.14.12
 
 Novice level Server-Side JavaScript knowledge would be good enough.
 
@@ -26,7 +27,7 @@ Any messages sent to the bot can be intercepted and replied more sensibly to sol
 ## Step 1: Including the SDK file
 To use the SDK, you have to copy the files in the `lib` directory into one of your implementation directories and require the SDK file `avaamo.js` as given below:
 
-```
+```js
 require('./lib/avaamo').Avaamo
 ```
 
@@ -35,7 +36,7 @@ require('./lib/avaamo').Avaamo
 ## Step 2: Instantiating `Avaamo` class
 The Avaamo SDK exports the primary class `Avaamo` which takes 5 arguments: bot-uuid, bot-access-token, message callback, acknowledgement callback, activity callback as given below:
 
-```
+```js
 (function myBot() {
   let bot_uuid = "<bot-uuid>",
     access_token = "<bot-access-token>";
@@ -50,7 +51,7 @@ This step involves two sub-steps.
 ### 3.1 Understanding the message object
 The callback should take two parameters: the message object and the Avaamo object(object instantiated in the previous step).
 
-```
+```js
 function printMessage(payload, avaamo) {
   //Process incoming message
   //Reply back to the conversation
@@ -61,7 +62,7 @@ The first argument which is the message object has 3 properties: `message`, `use
 
 The `message` property is of type `Message` which has the following properties and methods:
 
-```
+```js
 //Get the message object
 let message = payload.message;
 
@@ -131,7 +132,7 @@ message.isText()
 #### Attachments
 You might want the bot to handle attachments in a sensible manner. The attachment property of the message object has convenient methods to access the attachments. Every message with attachment has `downloadAll` method to download the attachments to specified location.
 
-```
+```js
 if(message.hasAttachments()) {
   //download all downloadable attachments to the specified path including form response.
   //if form response has downloadable attachment like file or image, they are downloaded too with this method.
@@ -149,7 +150,7 @@ Note: The path given will be created with 0777 permission if the path doesn't ex
 #### Form Response Attachment
 Attachment type `form_response` is little different as they have both text and downloadable content. Moreover, the form response has multiple questions and corresponding responses. You can access them as given below:
 
-```
+```js
 if(message.hasForm()) {
   /* calling `getFormResponse` on attachments in case of form response attachment will return a promise which resolves with all replies of the form.
 
@@ -190,7 +191,7 @@ On the attachments property, you can call methods like getForm, getReplies, getQ
 
 If you want to know more about the forms itself(not form just response), call `getForm` method on the attachments property and it will return a promise which resolves with an object of type FormResponse which has the following methods to access the form:
 
-```
+```js
 //Returns form title
 message.attachments.getForm().then(function(form) {
   //Return form title
@@ -242,25 +243,25 @@ Next critical part of the callback is to respond to the incoming messages. Once 
 
 Inside the callback, the Avaamo object is provided to send message back to the conversation. The object has methods to send text, file, image and card type messages to the conversation.
 
-```
+```js
 //Send text message back to the same conversation
 avaamo.sendMessage("Hello user!", message.getConversationUuid());
 ```
 <img alt="text" src="/screenshots/text.png" width="500" />
 
-```
+```js
 //Send a file back to the same conversation
 avaamo.sendFile("<path to your local file>", message.getConversationUuid());
 ```
 <img alt="file" src="/screenshots/file.png" width="500" />
 
-```
+```js
 //Send an image back to the same conversation
 avaamo.sendImage("<path to image>", "<Caption for image or Can be left empty>", message.getConversationUuid());
 ```
 <img alt="image" src="/screenshots/image.png" width="500" />
 
-```
+```js
 //Send a card back to the same conversation
 let card = array(
   "title" => "<card title>",
@@ -286,13 +287,13 @@ Web links are usual web page link and it is opened in a browser(webview in case 
 Deep links are commands that can do certain actions within the Avaamo Messaging application. Lets say you want to ask an Yes/No question to the user and expecting a reply with yes or no. It is common that people reply with extra words like "Answer is Yes.". Parsing that answer(natural language, context based text) and extracting information is little tedious job (not impossible). To make it easy, reply with a card which has deep links that can post just yes or no.
 
 Using the SDK, you can create such interesting deep links very easily. The following line of code will generate a link object.
-```
+```js
 Link.get_auto_send_message_link("Yes", "yes");
 ```
 Add this link in a card and send it to the user. The user will see the title as "Yes" and when the user taps this link, it will post the text "yes" into the conversation. That message will reach the `onMessageCallback` with which you can do the next step. This way you can avoid natural language, context based interaction.
 
 The following are the links that can be created and used in the card:
-```
+```js
 //Web link
 Link.getWebpageLink(<title>, <url>);
 
@@ -333,7 +334,8 @@ Might not be very useful, but if in case you want to keep track if the user had 
 This callback is also called with two arguments: the acknowledgement object and the Avaamo object.
 
 The acknowledgement object has user field, similar to the message object, and read_ack object having which message is read(message_uuid) and when it was read(timestamp). Sample is given below:
-```
+
+```js
 let printAck = function(ack, avaamo) {
   //acknowledgement processing
 
@@ -349,7 +351,7 @@ This callback is also called with two arguments: the activity object and the Ava
 
 The activity object has `user` field, similar to the message object which has the information about the user who has launched the bot. It also has what time he/she has launched the bot and what activity type it is. The activity type will be "user_visit" as of now. It could change later. The following callback prints a message whenever the user visits the bot:
 
-```
+```js
 function printAcitivity(activity, avaamo) {
   let name = "User", event = null;
   if(activity.user) {
