@@ -238,7 +238,7 @@ message.attachments.getForm().then(function(form) {
 All these methods are of highly useful to read the form responses within the bot and response accordingly.
 
 ### Step 3.2 Responding back to the message
-Next critical part of the callback is to respond to the incoming messages. Once you extract the information from the message, you want to reply back with messages which can be text, file, image or card. The sample code in `bot_app.php` has example for each case.
+Next critical part of the callback is to respond to the incoming messages. Once you extract the information from the message, you want to reply back with messages which can be text, file, image or card. The sample code in `bot_app.js` has example for each case.
 
 Inside the callback, the Avaamo object is provided to send message back to the conversation. The object has methods to send text, file, image and card type messages to the conversation.
 
